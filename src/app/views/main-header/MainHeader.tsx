@@ -3,6 +3,7 @@ import {
   FontSizes, getTheme, IStackStyles, IStackTokens, Label, MessageBar, MessageBarType, Stack
 } from '@fluentui/react';
 import { FormattedMessage } from 'react-intl';
+import { Login } from '@microsoft/mgt-react';
 
 import { Settings } from '../settings';
 import { FeedbackButton } from '../app-sections/FeedbackButton';
@@ -55,7 +56,8 @@ export const MainHeader: React.FunctionComponent = () => {
           <span style={itemStyles}>
             <FeedbackButton />
             <Settings />
-            <Authentication />
+            <Login />
+            {/* <Authentication /> */}
           </span>
           <span style={itemStyles}></span>
         </Stack>
