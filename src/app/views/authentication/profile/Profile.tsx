@@ -22,6 +22,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useId } from '@fluentui/react-hooks';
+import { Login } from '@microsoft/mgt-react';
 
 import { componentNames, eventTypes, telemetry } from '../../../../telemetry';
 import { IRootState } from '../../../../types/root';
@@ -180,7 +181,8 @@ const Profile = (props: any) => {
       styles={personaStyleToken} />
 
     return (<>
-      <ActionButton ariaLabel='profile'
+      <Login />
+      {/* <ActionButton ariaLabel='profile'
         id={buttonId}
         onClick={toggleIsCalloutVisible}
         role='button'
@@ -226,7 +228,7 @@ const Profile = (props: any) => {
 
           </Stack>
         </Callout>
-      )}
+      )} */}
     </>
     )
   }

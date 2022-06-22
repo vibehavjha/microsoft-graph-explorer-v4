@@ -5,6 +5,8 @@ import { initializeIcons } from '@fluentui/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { addLocaleData, IntlProvider } from 'react-intl';
+import { Providers } from '@microsoft/mgt-element';
+import { Msal2Provider } from '@microsoft/mgt-msal2-provider';
 
 import de from 'react-intl/locale-data/de';
 import en from 'react-intl/locale-data/en';
@@ -37,6 +39,7 @@ import { IDevxAPI } from './types/devx-api';
 import { Mode } from './types/enums';
 import { changeTheme } from './app/services/actions/theme-action-creator';
 import { fetchResources } from './app/services/actions/resource-explorer-action-creators';
+import { DEFAULT_USER_SCOPES } from './app/services/graph-constants';
 
 // removes the loading spinner from GE html after the app is loaded
 const spinner = document.getElementById('spinner');
@@ -176,6 +179,11 @@ function getWorkerFor(worker: string): string {
 
 const telemetryProvider: ITelemetry = telemetry;
 telemetryProvider.initialize();
+
+Providers.globalProvider = new Msal2Provider({
+  clientId: process.env.REACT_APP_CLIENT_ID!,
+  scopes: [DEFAULT_USER_SCOPES]
+});
 
 const Root = () => {
   return (
