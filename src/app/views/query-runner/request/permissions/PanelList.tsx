@@ -1,13 +1,23 @@
 import {
   Announced,
+  CheckboxVisibility,
   DetailsList,
   DetailsListLayoutMode,
+  DetailsRow,
+  GroupedList,
   GroupHeader,
   IColumn,
   IDetailsListCheckboxProps,
+  IGroup,
   Label,
+  PrimaryButton,
   SearchBox,
-  SelectionMode
+  SelectionMode,
+  SelectionZone,
+  Selection,
+  ISelectionOptions,
+  IObjectWithKey,
+  ISelection
 } from '@fluentui/react';
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -20,6 +30,7 @@ import { dynamicSort } from '../../../../utils/dynamic-sort';
 import { generateGroupsFromList } from '../../../../utils/generate-groups';
 import { searchBoxStyles } from '../../../../utils/searchbox.styles';
 import { setConsentedStatus } from './util';
+import { useConst } from '@fluentui/react-hooks';
 
 interface IPanelList {
   messages: any;
@@ -42,7 +53,7 @@ const PanelList = ({ messages,
   const { consentedScopes, scopes, authToken } = useSelector((state: IRootState) => state);
   const { fullPermissions } = scopes.data;
   const [permissions, setPermissions] = useState(sortPermissions(fullPermissions));
-  const permissionsList: any[] = [];
+  const permissionsList : any[] = [];
   const tokenPresent = !!authToken.token;
 
   setConsentedStatus(tokenPresent, permissions, consentedScopes);
@@ -70,15 +81,45 @@ const PanelList = ({ messages,
 
   const groups = generateGroupsFromList(permissionsList, 'groupName');
 
+  const groupHeaderStyles = () => {
+    return {
+      check: { display: 'none' }
+    }
+  }
 
   const onRenderGroupHeader = (props: any): JSX.Element | null => {
     if (props) {
       return (
-        <GroupHeader  {...props} onRenderGroupHeaderCheckbox={renderCustomCheckbox} />
+        <GroupHeader  {...props} styles={groupHeaderStyles}
+        />
       )
     }
     return null;
   };
+
+  const mySelection =  useConst(() => {
+    const s = new Selection();
+    // s.setItems(permissionsList, true);
+    // const itttt = s.canSelectItem(item);
+    const theItems = s.getItems();
+    console.log(theItems);
+    return s;
+  });
+
+
+  const onRenderCell = (nestingDepth?: number, item?: any, itemIndex?: number, group?: IGroup): React.ReactNode => {
+    return (
+      <DetailsRow
+        columns={columns}
+        groupNestingDepth={1}
+        item={item}
+        itemIndex={itemIndex!}
+        selection={mySelection}
+        selectionMode={SelectionMode.multiple}
+        group={group}
+      />
+    )
+  }
 
   return (
     <>
@@ -95,25 +136,16 @@ const PanelList = ({ messages,
       />
       <Announced message={`${permissions.length} search results available.`} />
       <hr />
-      <DetailsList
+      <GroupedList
+        onRenderCell={onRenderCell}
         onShouldVirtualize={() => false}
-        items={permissions}
-        columns={columns}
+        items={permissionsList}
         groups={groups}
-        onRenderItemColumn={(item?: any, index?: number, column?: IColumn) => renderItemColumn(item, index, column)}
-        selectionMode={SelectionMode.multiple}
-        layoutMode={DetailsListLayoutMode.justified}
-        selection={selection}
         compact={true}
         groupProps={{
           showEmptyGroups: false,
           onRenderHeader: onRenderGroupHeader
         }}
-        ariaLabelForSelectionColumn={messages['Toggle selection'] || 'Toggle selection'}
-        ariaLabelForSelectAllCheckbox={messages['Toggle selection for all items'] || 'Toggle selection for all items'}
-        checkButtonAriaLabel={messages['Row checkbox'] || 'Row checkbox'}
-        onRenderDetailsHeader={(props?: any, defaultRender?: any) => renderDetailsHeader(props, defaultRender)}
-        onRenderCheckbox={(props?: IDetailsListCheckboxProps) => renderCustomCheckbox(props)}
       />
       {permissions && permissions.length === 0 &&
         <Label style={{
