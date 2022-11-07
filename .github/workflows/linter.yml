@@ -6,6 +6,7 @@ on:
     branches:
       - master
       - dev
+      - test/accessibility-playwright
   pull_request:
     types: [opened, synchronize, reopened, closed]
 
