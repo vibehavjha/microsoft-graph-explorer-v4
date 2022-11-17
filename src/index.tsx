@@ -4,7 +4,7 @@ import '@ms-ofb/officebrowserfeedbacknpm/styles/officebrowserfeedback.css';
 import { initializeIcons } from '@fluentui/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { addLocaleData, IntlProvider } from 'react-intl';
+import { IntlProvider } from 'react-intl';
 
 import de from 'react-intl/locale-data/de';
 import en from 'react-intl/locale-data/en';
@@ -109,8 +109,6 @@ function refreshAccessToken() {
 refreshAccessToken();
 
 setInterval(refreshAccessToken, 1000 * 60 * 10); // refresh access token every 10 minutes
-
-addLocaleData([...pt, ...de, ...en, ...fr, ...jp, ...ru, ...zh, ...es]);
 
 const theme = new URLSearchParams(location.search).get('theme');
 
