@@ -1,5 +1,5 @@
 import { getId, getTheme, IconButton, mergeStyleSets, TooltipHost } from '@fluentui/react';
-import { CSSProperties } from 'react';
+import { CSSProperties, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { componentNames, eventTypes, telemetry } from '../../../../telemetry';
 
@@ -7,6 +7,7 @@ import { ResourceOptions } from '../../../../types/resources';
 import { validateExternalLink } from '../../../utils/external-link-validation';
 import { getStyleFor } from '../../../utils/http-methods.utils';
 import { translateMessage } from '../../../utils/translate-messages';
+import variantService from '../../../services/variantService';
 interface IResourceLinkProps {
   link: any;
   resourceOptionSelected: Function;
@@ -15,6 +16,14 @@ interface IResourceLinkProps {
 
 const ResourceLink = (props: IResourceLinkProps) => {
   const { link: resourceLink, classes } = props;
+  const [alwaysShowButtons, setAlwaysShowButtons] = useState(false);
+
+  variantService.getFeatureVariables('gesample', 'alwaysShowButtons').then((value) => {
+    if(value !== undefined) {
+      console.log('alwaysShowButtons', value);
+      setAlwaysShowButtons(!!value);
+    }
+  });
 
   const showButtons = {
     background: getTheme().palette.neutralLight,
@@ -28,7 +37,7 @@ const ResourceLink = (props: IResourceLinkProps) => {
     {
       link: {
         display: 'flex', lineHeight: 'normal', width: '100%', overflow: 'hidden',
-        div: {
+        div: alwaysShowButtons ? showButtons :{
           display: 'none'
         },
         '&:hover, .is-selected &': showButtons
