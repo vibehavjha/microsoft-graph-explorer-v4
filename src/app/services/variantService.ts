@@ -69,6 +69,7 @@ class VariantService {
   public async getFeatureVariables(namespace: string, flagname: string) {
     //The default namespace is created as an example. You can choose to update it later.
     const defaultConfig = this.expResponse?.find(c => c.Id === namespace);
+    console.log(defaultConfig);
     return defaultConfig?.Parameters[flagname];
   }
 

@@ -1,5 +1,5 @@
 import { getId, getTheme, IconButton, mergeStyleSets, TooltipHost } from '@fluentui/react';
-import { CSSProperties, useState } from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { componentNames, eventTypes, telemetry } from '../../../../telemetry';
 
@@ -17,14 +17,13 @@ interface IResourceLinkProps {
 const ResourceLink = (props: IResourceLinkProps) => {
   const { link: resourceLink, classes } = props;
   const [alwaysShowButtons, setAlwaysShowButtons] = useState(false);
-
-  variantService.getFeatureVariables('gesample', 'alwaysShowButtons').then((value) => {
-    if(value !== undefined) {
-      console.log('alwaysShowButtons', value);
-      setAlwaysShowButtons(!!value);
-    }
-  });
-
+  useEffect(() => {
+    variantService.getFeatureVariables('gesample', 'alwaysShowButtons').then((value) => {
+      if(value !== undefined) {
+        setAlwaysShowButtons(!!value);
+      }
+    });
+  }, []);
   const showButtons = {
     background: getTheme().palette.neutralLight,
     div: {

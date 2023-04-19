@@ -27,6 +27,7 @@ import { readTheme } from './themes/theme-utils';
 import { IDevxAPI } from './types/devx-api';
 import { Mode } from './types/enums';
 import { fetchResources } from './app/services/actions/resource-explorer-action-creators';
+import variantService from './app/services/variantService';
 
 const appRoot: HTMLElement = document.getElementById('root')!;
 initializeIcons();
@@ -168,6 +169,7 @@ function getWorkerFor(worker: string): string {
 	    importScripts('${WORKER_PATH}/${worker}.worker.js');`)}`;
 }
 
+variantService.initialize();
 const telemetryProvider: ITelemetry = telemetry;
 telemetryProvider.initialize();
 
