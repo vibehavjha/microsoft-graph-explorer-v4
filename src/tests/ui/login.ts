@@ -19,7 +19,7 @@ export const logIn = async (page: any) => {
   await popup.locator('[placeholder="Password"]').fill(PLAYWRIGHT_TESTS_PASSWORD);
   await popup.locator('text=Sign in').click();
 
-  await expect(popup).toHaveURL('https://login.microsoftonline.com/common/login');
+  await expect(popup).toHaveURL('https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47');
   const finalStep = popup.locator('text=Yes');
   if(finalStep.isVisible()) {
     await finalStep.click();

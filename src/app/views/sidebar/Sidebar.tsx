@@ -13,6 +13,7 @@ import { telemetry } from '../../../telemetry';
 import { translateMessage } from '../../utils/translate-messages';
 import SampleQueries from './sample-queries/SampleQueries';
 import { sidebarStyles } from './Sidebar.styles';
+import CoPilot from './copilot/CoPilot';
 import { ResourceExplorer, History } from '../common/lazy-loader/component-registry';
 interface ISidebar {
   currentTab: string;
@@ -48,6 +49,16 @@ export const Sidebar = (props: ISidebar) => {
           defaultSelectedKey={props.currentTab}
           styles={{ text: { fontSize: FontSizes.size14 } }}>
           <PivotItem
+            headerText={translateMessage('Co-Pilot')}
+            itemIcon='People'
+            itemKey='co-pilot'
+            headerButtonProps={{
+              'aria-controls': 'co-pilot-tab'
+            }}
+          >
+            <div id={'co-pilot-tab'}><CoPilot /></div>
+          </PivotItem>
+          <PivotItem
             headerText={translateMessage('Sample Queries')}
             itemIcon='Rocket'
             itemKey='sample-queries'
@@ -81,6 +92,23 @@ export const Sidebar = (props: ISidebar) => {
       }
       {!props.showSidebar && !props.mobileScreen && (
         <Stack tokens={{ childrenGap: 10 }}>
+          <TooltipHost
+            content={
+              <div style={{ padding: '3px' }}>
+                {translateMessage('Co-Pilot')}
+              </div>}
+            calloutProps={{ gapSpace: 0 }}
+            directionalHint={DirectionalHint.bottomCenter}
+            styles={{ root: { display: 'inline-block' } }}
+            delay={TooltipDelay.zero}
+          >
+            <IconButton
+              iconProps={{ iconName: 'People' }}
+              ariaLabel={translateMessage('Co-Pilot')}
+              onClick={() => openComponent('co-pilot')}
+              styles={styles}
+            />
+          </TooltipHost>
           <TooltipHost
             content={
               <div style={{ padding: '3px' }}>

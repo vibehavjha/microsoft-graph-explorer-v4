@@ -122,6 +122,15 @@ export const ResourceExplorer = (props?: any) => {
   )
 }
 
+export const CoPilot = (props?: any) => {
+  return (
+    <SuspenseLoader>
+      <LazyResourceExplorer {...props} />
+    </SuspenseLoader>
+  )
+}
+
+
 export const ShareQuery = (props?: any) => {
   return (
     <SuspenseLoader>
