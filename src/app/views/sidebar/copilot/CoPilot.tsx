@@ -417,7 +417,7 @@ const UnstyledSampleQueries = (sampleProps?: ISampleQueriesProps): JSX.Element =
 
   async function _submitButtonClicked(){
     try{
-      alert('Clicked');
+      // alert('Clicked');
       setUpdated(message);
       const url = 'http://127.0.0.1:8000/copilot/queries';
       const payload : any = {
@@ -442,7 +442,7 @@ const UnstyledSampleQueries = (sampleProps?: ISampleQueriesProps): JSX.Element =
       console.log(output)
       const data=JSON.stringify(output.API)
       console.log(data)
-      alert(data);
+      // alert(data);
 
 
       const firstSplit=data.split(/\\n(.*)/s)[1].toString().split(/ (.*)/s)
