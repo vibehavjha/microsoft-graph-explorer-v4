@@ -462,12 +462,12 @@ const UnstyledSampleQueries = (sampleProps?: ISampleQueriesProps): JSX.Element =
       const thirdSplit= (data.includes('Content-Type') ? secondSplit[1].toString().split(/\\n(.*)/s) : secondSplit)
       console.log(thirdSplit)
       // eslint-disable-next-line max-len
-      const fourthSplit= (data.includes('Content-Type') ? thirdSplit[1].toString().split(/\\n\\n{\\n(.*)/s)[1].toString().split(/\\n(.*)/s)[0] : secondSplit[1].toString().split(/\\n(.*)/s)[0])
-      console.log(fourthSplit[0])
+      const fourthSplit= (data.includes('Content-Type') ? thirdSplit[1].toString().split(/\\n\\n{\\n(.*)/s)[1].toString().split(/\\n(.*)/s)[0] : secondSplit[1].toString().split(/\\n(.*)/s)[0]).toString()
+      console.log(fourthSplit)
 
       const query: IQuery =
         {
-          sampleUrl: fourthSplit[0],
+          sampleUrl: fourthSplit,
           selectedVerb: secondSplit[0],
           sampleBody: (data.includes('Content-Type')) ? '{\r\n' + fourthSplit[0] + '\r\n}' : '',
           sampleHeaders: (data.includes('Content-Type')) ? [{name:'Content-Type', value:'application/json'}] : [],
