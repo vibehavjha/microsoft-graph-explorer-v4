@@ -476,7 +476,7 @@ const UnstyledSampleQueries = (sampleProps?: ISampleQueriesProps): JSX.Element =
             }
           ] : [],
           sampleBody: (data.includes('Content-Type')) ? '{\r\n ' + thirdSplit[0].replaceAll('\\', '') + ' \r\n}' : '',
-          selectedVersion: 'v1.0'
+          selectedVersion: secondSplit[0].substring(28,32)
           // {"API":"\nGET https://graph.microsoft.com/v1.0/sites/{site-id}/lists
           // \nAuthorization: Bearer {access-token}"}
           // {"API":"\nPOST https://graph.microsoft.com/v1.0/me/onenote/notebooks\nContent-Type: application/json
