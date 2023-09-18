@@ -1,20 +1,15 @@
 import {
-  Announced, DetailsList, DetailsRow, FontSizes, FontWeights, getId,
+  DetailsList, DetailsRow, FontSizes, FontWeights, getId,
   getTheme,
-  GroupHeader, IColumn, Icon, IDetailsRowStyles, IGroup, Link, MessageBar, MessageBarType, SearchBox,
-  SelectionMode, Spinner, SpinnerSize, styled, TooltipHost, INavLink
-} from '@fluentui/react';
+  GroupHeader, IColumn, Icon, IDetailsRowStyles, IGroup, Link, MessageBar, MessageBarType,
+  SelectionMode, Spinner, SpinnerSize, styled, TooltipHost} from '@fluentui/react';
 import { TextField } from '@fluentui/react/lib/TextField';
-import { IResource, IResourceLink, ResourceLinkType, ResourceOptions } from '../../../../types/resources';
-import { Stack, IStackTokens } from '@fluentui/react';
-import { DefaultButton, PrimaryButton } from '@fluentui/react/lib/Button';
+import { PrimaryButton } from '@fluentui/react/lib/Button';
 import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
-import { geLocale } from '../../../../appLocale';
 import { AppDispatch, useAppSelector } from '../../../../store';
-import { componentNames, telemetry } from '../../../../telemetry';
 import { IQuery, ISampleQueriesProps, ISampleQuery } from '../../../../types/query-runner';
 import { setSampleQuery } from '../../../services/actions/query-input-action-creators';
 import { setQueryResponseStatus } from '../../../services/actions/query-status-action-creator';
@@ -22,21 +17,15 @@ import { fetchSamples } from '../../../services/actions/samples-action-creators'
 import { GRAPH_URL } from '../../../services/graph-constants';
 import { generateGroupsFromList } from '../../../utils/generate-groups';
 import { getStyleFor } from '../../../utils/http-methods.utils';
-import { searchBoxStyles } from '../../../utils/searchbox.styles';
 import { substituteTokens } from '../../../utils/token-helpers';
 import { translateMessage } from '../../../utils/translate-messages';
 import { classNames } from '../../classnames';
-import { NoResultsFound } from '../sidebar-utils/SearchResult';
 import { sidebarStyles } from '../Sidebar.styles';
 import {
   isJsonString, performSearch, shouldRunQuery, trackDocumentLinkClickedEvent,
   trackSampleQueryClickEvent
 } from './sample-query-utils';
 import { runQuery } from '../../../services/actions/query-action-creators';
-import {
-  createResourcesList, getResourcePaths,
-  getUrlFromLink
-} from '../resource-explorer/resource-explorer.utils';
 
 const UnstyledSampleQueries = (sampleProps?: ISampleQueriesProps): JSX.Element => {
 
@@ -350,6 +339,11 @@ const UnstyledSampleQueries = (sampleProps?: ISampleQueriesProps): JSX.Element =
     setMessage((event.target as HTMLInputElement).value);
   };
 
+  const handleKeyDown = (event: { key: string; }) => {
+    if(event.key === 'Enter') {
+      _submitButtonClicked();
+    }
+  }
 
   return (
     <div>
@@ -388,6 +382,7 @@ const UnstyledSampleQueries = (sampleProps?: ISampleQueriesProps): JSX.Element =
         <TextField multiline autoAdjustHeight
           placeholder='Type your natural language query here'
           onChange={handleChange}
+          onKeyDown={handleKeyDown}
           value={message}/>
       </div>
 
@@ -444,13 +439,8 @@ const UnstyledSampleQueries = (sampleProps?: ISampleQueriesProps): JSX.Element =
 
       //Parse the response JSON data
       const output : any = await response.json();
-      // console.log(typeof output)
       console.log(output)
-      // const data = String(output)
-      // console.log(typeof data)
-      // console.log(data)
       const data=JSON.stringify(output.API)
-      // console.log(typeof data)
       console.log(data)
       alert(data);
 
@@ -477,53 +467,14 @@ const UnstyledSampleQueries = (sampleProps?: ISampleQueriesProps): JSX.Element =
           ] : [],
           sampleBody: (data.includes('Content-Type')) ? '{\r\n ' + thirdSplit[0].replaceAll('\\', '') + ' \r\n}' : '',
           selectedVersion: secondSplit[0].substring(28,32)
-          // {"API":"\nGET https://graph.microsoft.com/v1.0/sites/{site-id}/lists
-          // \nAuthorization: Bearer {access-token}"}
-          // {"API":"\nPOST https://graph.microsoft.com/v1.0/me/onenote/notebooks\nContent-Type: application/json
-          // \nAuthorization: Bearer {access-token}\n\n{\n  \"displayName\": \"testingNotebook\"\n}"}
         }
 
-      // const setQuery = (resourceLink: INavLink) => {
-      //   const link = resourceLink as IResourceLink;
-      //   if (resourceLink.type === ResourceLinkType.NODE) { return; }
-      //   const resourceUrl = getUrlFromLink(link.paths);
-      //   if (!resourceUrl) { return; }
-      //   const sampleUrl = `${GRAPH_URL}/v1.0${resourceUrl}`;
-      //   const verb = resourceLink.method!;
-      //   const query: IQuery = {
-      //     selectedVerb: verb.toString().toUpperCase(),
-      //     selectedVersion: 'v1.0',
-      //     sampleUrl,
-      //     sampleHeaders: [],
-      //     sampleBody: undefined
-      //   };
-      //   dispatch(setSampleQuery(query));
-      //   telemetry.trackEvent(eventTypes.LISTITEM_CLICK_EVENT, {
-      //     ComponentName: componentNames.RESOURCES_LIST_ITEM,
-      //     ResourceLink: resourceUrl,
-      //     SelectedVersion: version
-      //   });
-      // }
-
-      // // querySelected(query);
+      dispatch(setSampleQuery(query));
       dispatch(runQuery(query));
-      // trackSampleQueryClickEvent(query);
-      // dispatch(setSampleQuery(query));
-
 
     } catch (error) {
       console.error('Error:', error);
 
-      /*export const queries: ISampleQuery[] = [
-        {
-          category: 'Getting Started',
-          method: 'GET',
-          humanName: 'my profile',
-          requestUrl: '/v1.0/me',
-          docLink: 'https://learn.microsoft.com/en-us/graph/api/user-get',
-          skipTest: false
-        },
-      */
     }
 
   }

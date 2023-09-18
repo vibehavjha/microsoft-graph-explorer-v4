@@ -281,7 +281,7 @@ const AutoComplete = (props: IAutoCompleteProps) => {
           onChange={onChange}
           onBlur={updateUrlContent}
           onKeyDown={onKeyDown}
-          value={queryUrl}
+          placeholder='Enter a co pilot prompt, select a sample query, or write your own'
           componentRef={focusRef}
           onRenderSuffix={(renderSuffix()) ? renderSuffix : undefined}
           ariaLabel={translateMessage('Query Sample Input')}
