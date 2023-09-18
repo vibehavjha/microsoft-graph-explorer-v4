@@ -9,7 +9,7 @@ function getClientIdFromEnv() {
 }
 
 const windowHasClientId = getClientIdFromWindow();
-const clientId = 'e86bcb0e-f637-4f6c-b861-a4f908da442f';
+const clientId = '4232cb55-076a-47ff-946c-59093148f5e3';
 export const configuration: Configuration = {
   auth: {
     clientId,

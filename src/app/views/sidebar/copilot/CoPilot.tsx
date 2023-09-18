@@ -455,22 +455,27 @@ const UnstyledSampleQueries = (sampleProps?: ISampleQueriesProps): JSX.Element =
       alert(data);
 
 
-      const firstSplit=data.split(/\\n(.*)/s)
+      const firstSplit=data.split(/\\n(.*)/s)[1].toString().split(/ (.*)/s)
       console.log(firstSplit)
-      const secondSplit=(firstSplit[1]).toString().split(/ (.*)/s)
-      console.log(secondSplit[0])
-      const thirdSplit= (data.includes('Content-Type') ? secondSplit[1].toString().split(/\\n(.*)/s) : secondSplit)
-      console.log(thirdSplit)
+      const secondSplit= (firstSplit[1]).toString().split(/\\n(.*)/s)
+      console.log(secondSplit)
+      console.log(secondSplit[0].slice(0, -1))
       // eslint-disable-next-line max-len
-      const fourthSplit= (data.includes('Content-Type') ? thirdSplit[1].toString().split(/\\n\\n{\\n(.*)/s)[1].toString().split(/\\n(.*)/s)[0] : secondSplit[1].toString().split(/\\n(.*)/s)[0]).toString()
-      console.log(fourthSplit)
+      const thirdSplit= (data.includes('Content-Type') ? secondSplit[1].toString().split(/{\\n(.*)/s)[1].toString().split(/\\n}(.*)/s) : secondSplit)
+      console.log(thirdSplit)
+      console.log('{\r\n ' + thirdSplit[0].replaceAll('\\', '') + ' \r\n}')
 
       const query: IQuery =
         {
-          sampleUrl: fourthSplit,
-          selectedVerb: secondSplit[0],
-          sampleBody: (data.includes('Content-Type')) ? '{\r\n' + fourthSplit[0] + '\r\n}' : '',
-          sampleHeaders: (data.includes('Content-Type')) ? [{name:'Content-Type', value:'application/json'}] : [],
+          selectedVerb: firstSplit[0],
+          sampleUrl: data.includes('Content-Type') ? secondSplit[0] : secondSplit[0].slice(0, -1),
+          sampleHeaders: (data.includes('Content-Type')) ? [
+            {
+              'name': 'Content-type',
+              'value': 'application/json'
+            }
+          ] : [],
+          sampleBody: (data.includes('Content-Type')) ? '{\r\n ' + thirdSplit[0].replaceAll('\\', '') + ' \r\n}' : '',
           selectedVersion: 'v1.0'
           // {"API":"\nGET https://graph.microsoft.com/v1.0/sites/{site-id}/lists
           // \nAuthorization: Bearer {access-token}"}

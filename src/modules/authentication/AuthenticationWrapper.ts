@@ -218,7 +218,7 @@ export class AuthenticationWrapper implements IAuthenticationWrapper {
       tenant = 'common';
     }
 
-    return 'https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/';
+    return 'https://login.microsoftonline.com/458036d1-1195-4710-8a72-e54198c14477/';
   }
 
   private async loginWithInteraction(userScopes: string[], sessionId?: string) {
