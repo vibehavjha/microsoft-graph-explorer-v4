@@ -453,7 +453,10 @@ const UnstyledSampleQueries = (sampleProps?: ISampleQueriesProps): JSX.Element =
       // eslint-disable-next-line max-len
       const thirdSplit= (data.includes('Content-Type') ? secondSplit[1].toString().split(/{\\n(.*)/s)[1].toString().split(/\\n}(.*)/s) : secondSplit)
       console.log(thirdSplit)
-      console.log('{\r\n ' + thirdSplit[0].replaceAll('\\', '') + ' \r\n}')
+      thirdSplit[0].replaceAll('\\n', '')
+      thirdSplit[0].replaceAll('\\', '')
+
+      console.log('{\r\n ' + thirdSplit[0] + ' \r\n}')
 
       const query: IQuery =
         {
@@ -465,15 +468,16 @@ const UnstyledSampleQueries = (sampleProps?: ISampleQueriesProps): JSX.Element =
               'value': 'application/json'
             }
           ] : [],
-          sampleBody: (data.includes('Content-Type')) ? '{\r\n ' + thirdSplit[0].replaceAll('\\', '') + ' \r\n}' : '',
+          // eslint-disable-next-line max-len
+          sampleBody: (data.includes('Content-Type')) ? '{\r\n ' + thirdSplit[0].replaceAll('\\n', '').replaceAll('\\', '') + ' \r\n}' : '',
           selectedVersion: secondSplit[0].substring(28,32)
         }
 
       dispatch(setSampleQuery(query));
       dispatch(runQuery(query));
 
-    } catch (error) {
-      console.error('Error:', error);
+    } catch (errorrr) {
+      console.error('Error:', errorrr);
 
     }
 

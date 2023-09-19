@@ -49,14 +49,14 @@ export const Sidebar = (props: ISidebar) => {
           defaultSelectedKey={props.currentTab}
           styles={{ text: { fontSize: FontSizes.size14 } }}>
           <PivotItem
-            headerText={translateMessage('Co-Pilot')}
+            headerText={translateMessage('Copilot')}
             itemIcon='People'
-            itemKey='co-pilot'
+            itemKey='Copilot'
             headerButtonProps={{
-              'aria-controls': 'co-pilot-tab'
+              'aria-controls': 'Copilot-tab'
             }}
           >
-            <div id={'co-pilot-tab'}><CoPilot /></div>
+            <div id={'Copilot-tab'}><CoPilot /></div>
           </PivotItem>
           <PivotItem
             headerText={translateMessage('Sample Queries')}
@@ -95,7 +95,7 @@ export const Sidebar = (props: ISidebar) => {
           <TooltipHost
             content={
               <div style={{ padding: '3px' }}>
-                {translateMessage('Co-Pilot')}
+                {translateMessage('Copilot')}
               </div>}
             calloutProps={{ gapSpace: 0 }}
             directionalHint={DirectionalHint.bottomCenter}
@@ -104,8 +104,8 @@ export const Sidebar = (props: ISidebar) => {
           >
             <IconButton
               iconProps={{ iconName: 'People' }}
-              ariaLabel={translateMessage('Co-Pilot')}
-              onClick={() => openComponent('co-pilot')}
+              ariaLabel={translateMessage('Copilot')}
+              onClick={() => openComponent('Copilot')}
               styles={styles}
             />
           </TooltipHost>
